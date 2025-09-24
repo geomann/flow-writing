@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowstate Web</title>
+<style>
+body {
+  font-family: "微软雅黑", sans-serif;
+  margin: 10px;
+}
+
+.controls input, .controls button {
+  font-size: 1rem;
+  padding: 4px 6px;
+  margin: 4px 0;
+}
+
+textarea {
+  width: 100%;
+  min-height: 200px;
+  font-size: 1rem; /* 根据系统字体自动缩放 */
+}
+
+.warning {color: red;}
+
+/* 针对窄屏手机调整字号和布局 */
+@media (max-width: 600px) {
+  .controls input, .controls button {
+    display: block; /* 每个控件独占一行 */
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+  textarea {
+    min-height: 150px;
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+<body>
+<h3>Flowstate</h3>
+<div class="controls">
+  总时长(分钟): <input id="minutes" value="15" size="4">
+  惩罚秒数: <input id="penalty" value="30" size="4">
+  <button onclick="start()">开始</button>
+  <button onclick="reset()">重置</button>
+</div>
+<p id="timer">未开始</p>
+<p id="status"></p>
+<textarea id="text" disabled></textarea>
+
+<script>
+let total=0, penalty=0, startTime, lastInputTime, warningCountdown=0, timer;
+
+function start(){
+  total = parseInt(document.getElementById('minutes').value)*60;
+  penalty = parseInt(document.getElementById('penalty').value);
+  document.getElementById('text').value='';
+  document.getElementById('text').disabled=false;
+  document.getElementById('text').focus();
+  startTime=Date.now();
+  lastInputTime=Date.now();
+  warningCountdown=0;
+  clearInterval(timer);
+  timer=setInterval(updateTimers,500);
+}
+
+function reset(){
+  if(confirm("确定要重置吗？所有内容将被清空。")){
+    clearInterval(timer);
+    document.getElementById('text').value='';
+    document.getElementById('text').disabled=true;
+    document.getElementById('timer').textContent='未开始';
+    document.getElementById('status').textContent='';
+  }
+}
+
+document.getElementById('text').addEventListener('input',()=>{
+  lastInputTime=Date.now();
+  warningCountdown=0;
+});
+
+function updateTimers(){
+  let elapsed=(Date.now()-startTime)/1000;
+  let remaining=Math.max(0, total-elapsed);
+  let m=Math.floor(remaining/60);
+  let s=Math.floor(remaining%60);
+  document.getElementById('timer').textContent=`剩余: ${m}:${s<10?'0'+s:s}`;
+
+  let idle=(Date.now()-lastInputTime)/1000;
+  let status=document.getElementById('status');
+
+  if (warningCountdown>0){
+    status.innerHTML=`<span class="warning">${warningCountdown} 秒后清空!</span>`;
+    warningCountdown--;
+    if (warningCountdown===0 && idle>=penalty){
+      let ok = confirm("空闲超过 "+penalty+" 秒，是否清空内容并继续？");
+      if (ok){
+        document.getElementById('text').value='';
+        lastInputTime=Date.now();
+        status.textContent='空闲: 0s (已清空)';
+      }else{
+        lastInputTime=Date.now();
+        status.textContent='已取消清空，请继续输入';
+      }
+    }
+  }else{
+    status.textContent=`空闲: ${Math.floor(idle)}s`;
+    if (idle>=Math.max(0,penalty-3)){
+      warningCountdown=3;
+    }
+  }
+
+  if (remaining<=0){
+    clearInterval(timer);
+    status.textContent='完成，可以保存';
+    document.getElementById('text').disabled=false;
+  }
+}
+</script>
+</body>
+</html>
