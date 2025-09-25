@@ -25,24 +25,6 @@ textarea {
 
 .warning {color: red;}
 
-/* Dark mode styles */
-body.dark-mode {
-  background-color: #333;
-  color: #eee;
-}
-
-body.dark-mode textarea {
-  background-color: #555;
-  color: #eee;
-  border-color: #777;
-}
-
-body.dark-mode .controls input {
-  background-color: #555;
-  color: #eee;
-  border-color: #777;
-}
-
 /* 针对窄屏手机调整字号和布局 */
 @media (max-width: 600px) {
   .controls input, .controls button {
@@ -65,7 +47,6 @@ body.dark-mode .controls input {
   惩罚秒数: <input id="penalty" value="30" size="4">
   <button onclick="start()">开始</button>
   <button onclick="reset()">重置</button>
-  <button onclick="toggleDarkMode()">深色模式</button>
 </div>
 <p id="timer">未开始</p>
 <p id="status"></p>
@@ -140,10 +121,6 @@ function updateTimers(){
     status.textContent='完成，可以保存';
     document.getElementById('text').disabled=false;
   }
-}
-
-function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
 }
 </script>
 </body>
