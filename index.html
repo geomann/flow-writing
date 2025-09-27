@@ -69,6 +69,7 @@ body.dark-mode .controls input {
 </div>
 <p id="timer">未开始</p>
 <p id="status"></p>
+<p id="quote" style="color: #6a5acd; font-style: italic;"></p>
 <textarea id="text" disabled></textarea>
 
 <div style="position: fixed; bottom: 10px; left: 10px; font-size: 12px; color: #666;">By Ryx</div>
@@ -139,6 +140,15 @@ function updateTimers(){
     clearInterval(timer);
     status.textContent='完成，可以保存';
     document.getElementById('text').disabled=false;
+    
+    const quotes = [
+      "写作是时间给大家的恩赐。当你老去，时间划过，你仍存在。",
+      "不写，就无法思考。",
+      "写作的人是自由的。",
+      "只有诉诸文字，才可能在彼时引起另外一个困在境遇里的人的共鸣，从而被理解。"
+    ];
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('quote').textContent = randomQuote;
   }
 }
 
