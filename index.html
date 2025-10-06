@@ -66,6 +66,7 @@ body.dark-mode .controls input {
   <button onclick="start()">开始</button>
   <button onclick="reset()">重置</button>
   <button onclick="toggleDarkMode()">深色模式</button>
+  <button id="copyButton" style="display:none;" onclick="copyContent()">复制内容</button>
 </div>
 <p id="timer">未开始</p>
 <p id="status"></p>
@@ -105,6 +106,7 @@ function reset(){
     document.getElementById('text').disabled=true;
     document.getElementById('timer').textContent='未开始';
     document.getElementById('status').textContent='';
+    document.getElementById('copyButton').style.display = 'none';
   }
 }
 
@@ -148,10 +150,21 @@ function updateTimers(){
     clearInterval(timer);
     status.textContent='完成，可以保存';
     document.getElementById('text').disabled=false;
+    document.getElementById('copyButton').style.display = 'inline';
     
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     document.getElementById('quote').textContent = randomQuote;
   }
+}
+
+function copyContent() {
+  const textToCopy = document.getElementById('text').value;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    alert('内容已复制到剪贴板');
+  }, (err) => {
+    console.error('无法复制内容: ', err);
+    alert('复制失败');
+  });
 }
 
 function toggleDarkMode() {
