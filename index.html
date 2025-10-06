@@ -77,6 +77,14 @@ body.dark-mode .controls input {
 <script>
 let total=0, penalty=0, startTime, lastInputTime, warningCountdown=0, timer;
 
+const quotes = [
+      "写作是时间给大家的恩赐。当你老去，时间划过，你仍存在。",
+      "不写，就无法思考。",
+      "写作的人是自由的。",
+      "只有诉诸文字，才可能在彼时引起另外一个困在境遇里的人的共鸣，从而被理解。",
+      "我写作，是为了让光阴的流逝使我安心。-- 博尔赫斯"
+    ];
+
 function start(){
   total = parseInt(document.getElementById('minutes').value)*60;
   penalty = parseInt(document.getElementById('penalty').value);
@@ -141,12 +149,6 @@ function updateTimers(){
     status.textContent='完成，可以保存';
     document.getElementById('text').disabled=false;
     
-    const quotes = [
-      "写作是时间给大家的恩赐。当你老去，时间划过，你仍存在。",
-      "不写，就无法思考。",
-      "写作的人是自由的。",
-      "只有诉诸文字，才可能在彼时引起另外一个困在境遇里的人的共鸣，从而被理解。"
-    ];
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     document.getElementById('quote').textContent = randomQuote;
   }

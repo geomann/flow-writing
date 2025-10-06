@@ -12,3 +12,11 @@ flow-writing是一个受到flowstate启发的自用脚本，通过netlify部署�
 
 202509241350
 - 更新了html的favicon，让书签变得更有辨识度
+
+---
+
+## What is flow-writing?
+
+`flow-writing` is a personal script inspired by the "flowstate" concept. It's a simple, web-based tool for "vomit-style" writing, accessible from anywhere on a computer or phone. The goal is to write continuously for a set period without pausing for self-censorship, allowing thoughts to flow freely.
+
+To some extent, this practice encourages a state of "flow" and can be a form of meditation through writing.
